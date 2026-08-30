@@ -1,0 +1,6 @@
+# Rust build artifacts — matches any directory named `target` at any depth
+target/
+
+# Bare `rustc` output binaries (no extension, sit next to a .rs file)
+# Add specific names here if you build without Cargo, e.g.:
+# hello-world/main

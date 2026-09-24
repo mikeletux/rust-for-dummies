@@ -4,32 +4,44 @@ use std::collections::HashMap;
 // middle position) and mode (the value that occurs most often; a hash map will be helpful here) 
 // of the list.
 
-pub fn get_median_and_mode(list_of_integers: &mut Vec<i32>) -> (i32, i32) {
-    let median: i32;
-    let mut occurances: HashMap<i32, i32> = HashMap::new();
+/// Returns the median of `numbers`, or `None` if the list is empty.
+///
+/// For an even number of elements, the median is the average of the two
+/// middle values (rounded towards zero, since we work with integers).
+pub fn median(numbers: &[i32]) -> Option<i32> {
+    if numbers.is_empty() {
+        return None;
+    }
 
-    list_of_integers.sort();
+    let mut sorted = numbers.to_vec();
+    sorted.sort();
 
-    if list_of_integers.len() % 2 == 1 {
-        median = list_of_integers[list_of_integers.len() / 2]
+    let middle = sorted.len() / 2;
+    let median = if sorted.len() % 2 == 1 {
+        sorted[middle]
     } else {
-        median = (list_of_integers[list_of_integers.len() / 2] + (list_of_integers[(list_of_integers.len() / 2) - 1] )) / 2;
+        (sorted[middle - 1] + sorted[middle]) / 2
+    };
+
+    Some(median)
+}
+
+/// Returns the value that appears most often in `numbers`,
+/// or `None` if the list is empty.
+pub fn mode(numbers: &[i32]) -> Option<i32> {
+    let mut counts: HashMap<i32, i32> = HashMap::new();
+    for number in numbers {
+        *counts.entry(*number).or_insert(0) += 1;
     }
 
-    for value in list_of_integers {
-        *occurances.entry(*value).or_insert(0) += 1;
-    }
-    
-    // We haven't seen (yet!) iterators or closures so:
-
-    let mut mode = 0;
-    let mut mode_value = i32::MIN;
-    for (k, v) in &occurances {
-        if *v > mode_value {
-            mode_value = *v;
-            mode = *k;
+    let mut mode = None;
+    let mut highest_count = 0;
+    for (number, count) in &counts {
+        if *count > highest_count {
+            highest_count = *count;
+            mode = Some(*number);
         }
     }
 
-    (median, mode)
+    mode
 }

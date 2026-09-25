@@ -68,6 +68,7 @@ pub fn get_all_employees(departments: &HashMap<String, Vec<String>>) -> Option<V
     Some(all_employees)
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
 

@@ -36,11 +36,10 @@ pub fn merge_two_lists(
     list1: Option<Box<ListNode>>,
     list2: Option<Box<ListNode>>,
 ) -> Option<Box<ListNode>> {
-    let mut dummy = ListNode::new(0); // We do not do anything with this
+    let mut dummy = ListNode::new(0);
     let mut tail = &mut dummy;
     let mut head1 = list1;
     let mut head2 = list2;
-
 
     while let (Some(node1), Some(node2)) = (head1.as_ref(), head2.as_ref()) {
         if node1.val <= node2.val {
@@ -52,14 +51,9 @@ pub fn merge_two_lists(
             head2 = node.next.take();
             tail.next = Some(node);
         }
+
         tail = tail.next.as_mut().unwrap();
-    }
-    // Attach the remaning nodes
-    if head1 == None {
-        tail.next = head2;
-    } else {
-        tail.next = head1;
-    }
+    } 
 
     dummy.next
 }
